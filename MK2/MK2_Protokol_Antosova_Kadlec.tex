@@ -1,0 +1,400 @@
+% Czech and fonts
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc} 
+\usepackage[czech]{babel}
+\usepackage{lmodern}
+
+% Margins and colors
+\usepackage[top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
+\usepackage{graphicx} 
+\usepackage{xcolor} 
+
+% Code listings
+\usepackage{listings} 
+\lstset{
+    backgroundcolor=\color{white},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=none,
+    xleftmargin=1cm,
+    xrightmargin=0.5cm,
+    aboveskip=4pt,
+    belowskip=4pt,
+}
+
+% Hyperlinks 
+\usepackage[hidelinks]{hyperref}
+
+% Header and footer
+\usepackage{fancyhdr} 
+\pagestyle{fancy} 
+\fancyhf{} 
+\renewcommand{\headrulewidth}{0.4pt} 
+\renewcommand{\footrulewidth}{0pt} 
+\fancyhead[C]{\small\itshape Úloha č. 2 \quad Matematická kartografie} 
+\fancyfoot[C]{\thepage}
+
+% Spacing
+\usepackage{setspace} 
+\setstretch{1.5}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{tabularx}
+
+\begin{document}
+
+% Titulni strana
+\begin{titlepage}
+    \centering
+
+    {\large Přírodovědecká fakulta}\\[0.3cm]
+    {\large Univerzita Karlova}\\[3cm]
+
+    \includegraphics[width=0.425\textwidth]{imageUK.png}\\[3cm]
+
+    {\LARGE\bfseries Konstrukce polyedrických glóbů}\\[0.5cm]
+    {\large Matematická kartografie}\\[4cm]
+
+    {\large Kristýna Antošová, Vít Kadlec}\\[0.5cm]
+    {\normalsize 1.N-GKDPZ}\\[0.3cm]
+    {\normalsize Praha 2026}
+
+    \vfill
+\end{titlepage}
+
+% Zadani
+\section{Zadání}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{Zadani_MK_2.png}
+\label{fig:zadani}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{Hodnoceni_MK_2.png}
+\label{fig:hodnoceni}
+\end{figure}
+
+\noindent V rámci zadání byly řešeny všechny výše zmíněné bonusové úlohy, kromě \textit{Konstrukce polyedrického globu (20- stěn)}.
+\newpage
+
+% Teoreticky zaklad
+\section{Popis a rozbor problému}
+
+\subsection{Gnómonická projekce}
+
+Gnómonická projekce patří mezi azimutální zobrazení a~je známa již ze~starého Řecka. Středem promítání je střed sféry~$C$, promítáme na rovinu tečnou ke sféře v~kartografickém pólu~$K$. Gnómonická projekce má několik charakteristických vlastností:
+
+\begin{itemize}
+    \item Zobrazí nejvýše jednu hemisféru bez rovníku, neboť $\lim_{u \to 0} \tan(90^{\circ} - u) = \infty$.
+    \item Obrazem poledníků jsou polopřímky vycházející z~obrazu pólu, obrazem rovnoběžek jsou soustředné kružnice.
+    \item Ortodroma se zobrazí jako přímka.
+    \item Zkresluje jak plochy, tak úhly a délkové zkreslení roste od obrazu pólu směrem k~okrajům.
+\end{itemize}
+
+Zobrazovací rovnice gnómonické projekce v~polárním tvaru lze zapsat jako:
+\begin{equation}
+    (\rho, \varepsilon) = (R \tan(90^{\circ} - \check{s}), \; d),
+\end{equation}
+kde $\check{s}$, $d$ jsou kartografické souřadnice bodu a~$R$ je poloměr sféry. V~pravoúhlém tvaru:
+\begin{equation}
+    x = R \cdot \tan(90^{\circ} - \check{s}) \cdot \cos d, \qquad
+    y = R \cdot \tan(90^{\circ} - \check{s}) \cdot \sin d.
+\end{equation}
+
+Pro měřítka v~gnómonické projekci platí vztahy:
+\begin{equation}
+    m_p = \frac{1}{\cos^2 \psi}, \qquad m_r = \frac{1}{\cos \psi}, \qquad P = \frac{1}{\cos^3 \psi},
+\end{equation}
+kde $\psi = 90^{\circ} - \check{s}$ je zenitová vzdálenost od kartografického pólu. Z~těchto vztahů je patrné, že $m_p > m_r$ pro~$\psi > 0$, tedy v~poledníkovém směru je vždy větší délkové zkreslení než ve~směru rovnoběžek.
+
+\subsection{Polyedrická aproximace sféry}
+
+Základním předpokladem při konstrukci polyedrických glóbů na platónských tělesech je, že rovina definovaná hranou tělesa a~středem sféry jemu vepsané řeže tuto sféru v~hlavní kružnici (ortodromě). Protože se ortodroma v~gnómonické projekci zobrazuje jako přímka, budou hranice plošek platónských těles v~projekci úsečky. Celou sféru lze tedy po~částech zobrazit na povrch platónského tělesa bez překryvů a~spár.
+
+Postup tvorby polyedrického glóbu se skládá z~několika kroků. Nejprve se určí zeměpisné souřadnice vrcholů zvoleného platónského tělesa. Do~těžiště každé plošky se umístí kartografický pól~$K$. V~rámci každé plošky se vytvoří síť poledníků a~rovnoběžek vztažená ke kartografickému pólu. Dále se načte soubor s~body kontinentů. Body na~sféře se transformují vzhledem ke~kartografickému pólu příslušné plošky a~následně se zobrazí v~gnómonické projekci. Výsledný obraz se ořízne podle hranic plošky, definovaných spojnicemi jejích vrcholů.
+
+\subsection{Transformace do obecné polohy zobrazení}
+
+Při transformaci bodu $P = [u, v]$ do obecné polohy vzhledem ke~kartografickému pólu $K = [u_k, v_k]$ je nutné použít kvadrantově korektní převod. Z~kosinové věty pro sférický trojúhelník $\triangle(S, P, K)$ plyne:
+\begin{equation}
+    \sin \check{s} = \sin u \cdot \sin u_k + \cos u \cdot \cos u_k \cdot \cos(v_k - v).
+\end{equation}
+
+Pro kartografickou délku $d$ se ze sinové a~kosinové věty odvodí:
+\begin{equation}
+    \tan d = \frac{\sin(v_k - v) \cdot \cos u}{\cos u \cdot \sin u_k \cdot \cos(v_k - v) - \sin u \cdot \cos u_k}.
+\end{equation}
+
+Kvadrantově korektní výsledek se získá s~využitím funkce $\mathrm{atan2}()$. Orientace úhlu $d$ je volena po~směru hodinových ručiček.
+
+\subsection{Pravidelný dvanáctistěn}
+
+Stěny pravidelného dvanáctistěnu tvoří pravidelné pětiúhelníky, jejichž vnitřní úhel je~$\omega = 108^{\circ}$. Úhel mezi sousedními ploškami je $\alpha = 116{,}5651^{\circ}$, z~čehož plyne $\beta = 180^{\circ} - \alpha = 63{,}4349^{\circ}$.
+
+Zeměpisná šířka dotykového bodu sféry vepsané se~stěnou je:
+\begin{equation}
+    u_\alpha = \alpha - 90^{\circ} \approx 26{,}5651^{\circ}.
+\end{equation}
+
+Zeměpisné šířky vrcholů dvanáctistěnu jsou:
+\begin{equation}
+    u_\gamma = 90^{\circ} - \gamma \approx 52{,}6226^{\circ}, \qquad u_\delta = 90^{\circ} - \gamma - \delta \approx 10{,}8123^{\circ}.
+\end{equation}
+
+Souřadnice 20~vrcholů dvanáctistěnu jsou rozděleny do~čtyř skupin:
+\begin{align}
+    &\text{Jižní ($-u_\gamma$):} \quad A = [-u_\gamma, 0^{\circ}], \; B = [-u_\gamma, 72^{\circ}], \; \ldots \; E = [-u_\gamma, 288^{\circ}], \\
+    &\text{Jižní ($-u_\delta$):} \quad F = [-u_\delta, 0^{\circ}], \; H = [-u_\delta, 72^{\circ}], \; \ldots \; N = [-u_\delta, 288^{\circ}], \\
+    &\text{Severní ($u_\delta$):} \quad G = [u_\delta, 36^{\circ}], \; I = [u_\delta, 108^{\circ}], \; \ldots \; O = [u_\delta, 324^{\circ}], \\
+    &\text{Severní ($u_\gamma$):} \quad P = [u_\gamma, 36^{\circ}], \; Q = [u_\gamma, 108^{\circ}], \; \ldots \; T = [u_\gamma, 324^{\circ}].
+\end{align}
+
+Zeměpisné délky sousedních skupin vrcholů jsou posunuty o~$36^{\circ}$, odlehlost ve~směru $v$ je vždy~$72^{\circ}$.
+
+Kartografické póly 12~stěn jsou:
+\begin{align}
+    \text{Severní:} \quad K_1 &= [u_\alpha, 0^{\circ}], \quad
+    K_2 = [u_\alpha, 72^{\circ}], \quad
+    K_3 = [u_\alpha, 144^{\circ}], \notag \\
+    K_4 &= [u_\alpha, 216^{\circ}], \quad
+    K_5 = [u_\alpha, 288^{\circ}], \\
+    \text{Jižní:} \quad K_6 &= [-u_\alpha, 36^{\circ}], \quad
+    K_7 = [-u_\alpha, 108^{\circ}], \quad
+    K_8 = [-u_\alpha, 180^{\circ}], \notag \\
+    K_9 &= [-u_\alpha, 252^{\circ}], \quad
+    K_{10} = [-u_\alpha, 324^{\circ}], \\
+    \text{Polární:} \quad K_{11} &= [90^{\circ}, \cdot], \quad
+    K_{12} = [-90^{\circ}, \cdot].
+\end{align}
+
+
+Poloměr sféry vepsané dvanáctistěnu s~délkou hrany~$a$ je:
+\begin{equation}
+    \rho = \frac{a}{20} \sqrt{10(25 + 11\sqrt{5})}.
+\end{equation}
+
+\newpage
+
+% Vypocty a zkresleni
+\section{Výpočty zkreslení gnómonické projekce}
+
+\subsection{Parciální derivace zobrazovacích rovnic}
+
+Pro výpočet měřítek a~zkreslení je nutné nejdříve odvodit parciální derivace zobrazovacích rovnic. Pro gnómonickou projekci platí:
+\begin{align}
+    f_u &= \frac{\partial x}{\partial u} = -\frac{R}{\sin^2 u} \cos d, &
+    f_v &= \frac{\partial x}{\partial v} = -R \tan(90^{\circ} - u) \sin d, \\
+    g_u &= \frac{\partial y}{\partial u} = -\frac{R}{\sin^2 u} \sin d, &
+    g_v &= \frac{\partial y}{\partial v} = R \tan(90^{\circ} - u) \cos d.
+\end{align}
+
+\subsection{Měřítka délek v~poledníku a~rovnoběžce}
+
+Z~parciálních derivací se určí lokální délková měřítka:
+\begin{equation}
+    m_p^2 = \frac{f_u^2 + g_u^2}{R^2} = \frac{1}{\sin^4 u}, \qquad
+    m_r^2 = \frac{f_v^2 + g_v^2}{R^2 \cos^2 u} = \frac{1}{\sin^2 u}.
+\end{equation}
+
+Gnómonická projekce patří mezi jednoduchá azimutální zobrazení, kde každá zobrazovací rovnice je funkcí pouze jedné proměnné. Z~tohoto důvodu se poloosy Tissotovy indikatrix rovnají přímo délkovým měřítkům: $a = m_p$, $b = m_r$.
+
+\subsection{Poloosy Tissotovy indikatrix}
+
+V~obecném případě se poloosy $a$, $b$ určí z~extrémních azimutů $A_1$, $A_2$:
+\begin{equation}
+    A_1 = \frac{1}{2} \arctan \frac{p}{m_p^2 - m_r^2}, \qquad A_2 = A_1 + \frac{\pi}{2},
+\end{equation}
+kde $p = 2(f_u f_v + g_u g_v) / (R^2 \cos u)$. Pro gnómonickou projekci vychází $p = 0$, a~proto $A_1 = 0$, $A_2 = 90^{\circ}$.
+
+\subsection{Úhel $\omega'$ a~maximální úhlové zkreslení $\Delta\omega$}
+
+Úhel $\omega'$ mezi obrazem poledníku a~rovnoběžky se vypočte jako:
+\begin{equation}
+    \tan \omega' = \frac{g_u f_v - f_u g_v}{f_u f_v + g_u g_v}.
+\end{equation}
+
+V~gnómonické projekci vychází $\omega' = 90^{\circ}$, protože se jedná o~azimutální zobrazení, ve~kterém se úhly mezi poledníky a~rovnoběžkami zachovávají.
+
+Maximální úhlové zkreslení je vypočteno tímto způsobem:
+\begin{equation}
+    \sin \frac{\Delta\omega}{2} = \frac{|m_p - m_r|}{m_p + m_r}.
+\end{equation}
+
+\subsection{Měřítko ploch}
+
+Plošné měřítko udává, kolikrát se zvětšuje plošný element po~zobrazení:
+\begin{equation}
+    P = \frac{g_u f_v - f_u g_v}{R^2 \cos u} = m_p \cdot m_r = \frac{1}{\sin^3 u}.
+\end{equation}
+
+\subsection{Meridiánová konvergence}
+
+Meridiánová konvergence $c$ udává úhel, který svírá obraz místního poledníku v~daném bodě s~osou~$y$ (obrazem základního poledníku). Vypočte se následovně:
+\begin{equation}
+    \sigma_p = \arctan \frac{g_u}{f_u} = \arctan \frac{\sin d}{\cos d} = d, \qquad c = \left|\sigma_p - \frac{\pi}{2}\right| = \left|d - 90^{\circ}\right|.
+\end{equation}
+
+V~gnomonické projekci je tedy meridiánová konvergence rovna doplňku 
+kartografické délky do~$90^\circ$. Pro bod s~$d = 36^\circ$ vychází $c = 54^\circ$.
+
+\newpage
+
+% Vysledky
+\section{Výsledky v~bodě~$Q$}
+
+Pro výpočet vlastností gnómonické projekce byl zvolen bod~$Q$, odpovídající vrcholu~$P$ dvanáctistěnu se~zeměpisnými souřadnicemi $[52{,}6226^{\circ}; \; 36^{\circ}]$. Souřadnice bodu~$Q$ byly nejprve transformovány do~šikmé polohy zobrazení vzhledem k~pólu stěny~$K_1$ pomocí funkce \texttt{uvTosd}. Následně byly dosazeny do odvozených vzorců zkreslení. Pro kontrolu v~Pythonu byla použita knihovna pyproj s~gnómonickou projekcí na elipsoidu WGS~84. Rozdíl v~meridiánové konvergenci je dán odlišnou konvencí: MATLAB počítá $c = 90^{\circ} - d$, pyproj vrací přímo hodnotu~$d$.
+
+\begin{table}[h!]
+\centering
+\caption{Vlastnosti gnómonické projekce v~bodě~$Q$}
+\begin{tabularx}{\textwidth}{X r r} % X roztáhne první sloupec, r zůstanou na pravé straně
+\toprule
+\textbf{Vlastnost} & \textbf{MATLAB} & \textbf{pyproj} \\
+\midrule
+Měřítko v~poledníku $m_p$ & 1,583593 & 1,581638 \\
+Měřítko v~rovnoběžce $m_r$ & 1,258409 & 1,260527 \\
+Poloosa Tissotovy indikatrix $a$ & 1,583593 & 1,581638 \\
+Poloosa Tissotovy indikatrix $b$ & 1,258409 & 1,260527 \\
+Úhel $\omega'$ (poledník/rovnoběžka) & $90^{\circ}\;00'\;00''$ & $89{,}999999^{\circ}$ \\
+Max.~úhlové zkreslení $\Delta\omega$ & $13^{\circ}\;08'\;26''$ & $12^{\circ}\;58'\;28''$ \\
+Měřítko ploch $P$ & 1,992808 & 1,993698 \\
+Meridiánová konvergence $c$ & $54^{\circ}\;00'\;00''$ & $36^{\circ}\;00'\;00''$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Tissotova indikatrix}
+
+Tissotova indikatrix znázorňuje deformaci nekonečně malé kružnice na~sféře po~zobrazení do~roviny mapy. V~gnómonické projekci se tato kružnice deformuje na~elipsu s~poloosami $a = m_p$ a~$b = m_r$. Poloosa~$a$ odpovídá směru maximálního délkového zkreslení, poloosa~$b$ směru minimálního zkreslení . Elipsa byla vykreslena na~obrazu geografické sítě v~normální poloze v~měřítku 1:1\,000\,000 dle zadání (viz Obr.~\ref{fig:tissot}).
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{Tissot (1).png}
+\caption{Tissotova indikatrix v~bodě~$Q$ na~geografické síti v~gnómonické projekci.}
+\label{fig:tissot}
+\end{figure}
+
+\newpage
+% Skripty
+\section{Skripty}
+
+Skripty pro tvorbu polyedrického glóbu společně se~všemi výpočty byly napsány v~SW MATLAB. Kontrolní výpočet zkreslení a tvorba 3D modelu byly provedeny v Python scriptech.
+
+\begin{itemize}
+    \item \texttt{uvTosd.m} --- transformace bodu $[u, v]$ do~šikmé polohy zobrazení $[\check{s}, d]$ vzhledem ke~kartografickému pólu $K = [u_k, v_k]$.
+    \item \texttt{gnom.m} --- gnómonická projekce v~šikmé poloze dle rovnic~(2).
+    \item \texttt{graticule.m} --- generování geografické sítě poledníků a~rovnoběžek.
+    \item \texttt{drawContinent.m} --- načtení lomových bodů kontinentu z~textového souboru.
+    \item \texttt{boundary.m} --- vykreslení ořezových linií (hranic plošek).
+    \item \texttt{createGlobeFace.m} --- funkce spojující vykreslení sítě, kontinentů a~ořezových linií pro jednu plošku.
+    \item \texttt{u2\_12.m} --- hlavní skript definující parametry všech 12~stěn dvanáctistěnu a~volající \texttt{createGlobeFace} pro každou stěnu.
+    \item \texttt{gnom\_distortions.m} --- výpočet zkreslení gnómonické projekce a~vykreslení Tissotovy indikatrix v~bodě~$Q$.
+
+    \item \texttt{pyproj\_gnom\_distortions.py} --- kontrolní výpočet zkreslení gnomonické projekce pomocí knihovny \textit{pyproj}.
+
+    \item \texttt{3D\_model.py} --- vizualizace 3D polyedrického globu (dvanáctistěnu) pomocí knihovny \textit{PyVista}.
+\end{itemize}
+
+\newpage
+
+% Konstrukce globu
+\section{Konstrukce polyedrického glóbu}
+
+\subsection{Generování geografické sítě}
+
+Geografická síť byla generována na~intervalu $\langle \underline{u}, \overline{u} \rangle \times \langle \underline{v}, \overline{v} \rangle$ příslušné plošky s~rozestupy $\Delta u = \Delta v = 10^{\circ}$ a~krokem vzorkování $\delta u = \delta v = 1^{\circ}$. Hodnoty $\underline{u}$, $\underline{v}$ byly voleny 5$^{\circ}$-10$^{\circ}$ menší než souřadnice nejjižnějšího a~nejzápadnějšího rohového bodu, $\overline{u}$, $\overline{v}$ analogicky větší.
+
+Poledníky byly generovány v~cyklu. Pro každou zeměpisnou délku~$v$ byl vytvořen vektor bodů $(u, v)$, transformován do~šikmé polohy funkce \texttt{uvTosd} a~zobrazen v~gnómonické projekci. Pro rovnoběžky byl postup analogický s~fixní šířkou~$u$.
+
+\subsection{Načtení lomových bodů kontinentů}
+
+Lomové body kontinentů byly načteny z~textových souborů, datové sady ESRI World Continents. Celkem bylo použito 11~souborů pokrývajících všechny kontinenty. Gnómonická projekce nezobrazuje rovník, proto byly body s~$\check{s} < 5^{\circ}$ smazány. 
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{12_sten.png}
+\caption{Jednotlivé stěny modelu v SW MATLAB.}
+\label{fig:rozlozeny}
+\end{figure}
+
+\subsection{Sestavení modelu}
+
+Jednotlivé plošky dvanáctistěnu byly vykresleny ve~12~subplotech a~exportovány ve~vektorovém formátu SVG. Následně byl soubor převeden do formátu DXF, který lze otevřít jako vektorová vrstva v softwaru ArcGIS Pro. Tam byly jednotlivé plošky oříznuty a ručně pospojovány do rozloženého modelu jednotlivých polokoulí (viz Obr. 3 a Obr. 4). Bylo zkontrolováno měřítko výsledného globu 1:100\,000\,000 a poté  byly modely exportovány do~dvoustránkového (A3) PDF.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{Severni_p.png}
+\caption{Rozložený model severní polokoule dvanáctistěnu.}
+\label{fig:severni}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{Jizni_p.png}
+\caption{Rozložený model jižní polokoule dvanáctistěnu.}
+\label{fig:jizni}
+\end{figure}
+
+\newpage
+
+% 3D model
+\section{3D model v~Pythonu}
+
+Pro tvorbu prostorového modelu dvanáctistěnu s~mapou na~povrchu byl napsán skript v~Pythonu s~využitím knihoven NumPy a~PyVista. Cílem bylo promítnout zeměpisnou síť a~kontury kontinentů přímo na~rovinné stěny dvanáctistěnu.
+
+\subsection{Postup}
+
+Z~geometrie dvanáctistěnu byly ze~zeměpisných souřadnic 20~vrcholů vypočteny kartézské souřadnice $(x, y, z)$ na~jednotkové sféře. Pro každou ze~12~stěn byla z~těžiště plošky spočtena vnější normála a~vzdálenost roviny stěny od~středu (poloměr vepsané sféry). Pro každý bod sítě nebo kontinentu se určila příslušná stěna jako ta, jejíž normála má největší skalární součin se~směrovým vektorem bodu. Následně byl bod gnómonicky promítnut na~rovinu stěny: paprsek ze~středu sféry přes bod na~povrchu dopadne na~stěnu ve~vzdálenosti $t = \rho / \langle \vec{n}, \hat{p} \rangle$. Na konec byly čáry přecházející přes hranu stěny přerušeny detekcí změny indexu stěny.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.55\textwidth]{12_sten_3D_model.png}
+\caption{3D model polyedrického glóbu v~prostředí PyVista.}
+\label{fig:3d model}
+\end{figure}
+
+\newpage
+\subsection{Export pro 3D tisk}
+
+Pro 3D~tisk byl vytvořen samostatný skript, který převádí čáry sítě a~kontinentů na~trubky (\textit{tubes}) a~odečítá je od~tělesa dvanáctistěnu pomocí Boolean difference. Výsledkem jsou zapuštěné rýhy na~povrchu modelu. Soubory byly exportovány ve~formátu STL. 
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.55\textwidth]{12_sten_3D_tisk.png}
+\caption{3D model polyedrického glóbu připraven pro 3D tisk.}
+\label{fig:3d tisk}
+\end{figure}
+
+% Zhodnocení
+\section{Zhodnocení a~závěr}
+
+Byl zkonstruován polyedrický glóbus na~dvanáctistěnu v~gnómonické projekci. Geografická síť s~kresbou kontinentů byla zobrazena na~všech 12~stěnách. V~okrajovém bodě~$Q = [52{,}6226^{\circ}; \; 36^{\circ}]$ byly symbolicky vypočteny parametry zkreslení a~vykreslena Tissotova indikatrix.
+
+Z~výsledků plyne, že v~poledníkovém směru je délkové zkreslení výrazně větší ($m_p \approx 1{,}58$) než ve~směru rovnoběžek ($m_r \approx 1{,}26$). Úhel mezi obrazem poledníku a~rovnoběžky zůstává zachován na~$90^{\circ}$, což odpovídá vlastnostem azimutálních zobrazení. Plošné měřítko $P \approx 1{,}99$ znamená, že plochy jsou v~bodě~$Q$ přibližně dvojnásobně zvětšeny. Maximální úhlové zkreslení $\Delta\omega \approx 13^{\circ}\;08'$ potvrzuje, že gnómonická projekce patří mezi zobrazení s~vyšším zkreslením.
+
+Hodnoty z~MATLABu byly ověřeny knihovnou pyproj na elipsoidu WGS84.Odchylky jsou způsobeny tím, že MATLAB počítá na kouli, zatímco pyproj na elipsoidu WGS~84.
+
+V~rámci bonusových úloh byl vytvořen 3D~model v~Pythonu (knihovna PyVista) a~přichystán STL soubor pro 3D~tisk v~měřítku 1:200\,000\,000.
+
+\newpage
+\renewcommand{\refname}{Zdroje} 
+\begin{thebibliography}{9}
+
+\bibitem{bayer_navod} BAYER, T. (2026): \textit{Konstrukce glóbů na platónských tělesech --- návod na cvičení}. Katedra aplikované geoinformatiky a kartografie, Přírodovědecká fakulta UK.
+
+\bibitem{bayer_prednasky} BAYER, T. (2025): \textit{Jednoduchá azimutální zobrazení. Azimutální projekce. UPS}. Přednáška č.~10 pro předmět Matematická kartografie, Přírodovědecká fakulta UK.
+
+\bibitem{snyder1987} SNYDER, J. P. (1987): \textit{Map Projections --- A Working Manual}. U.S. Geological Survey Professional Paper 1395.
+
+\bibitem{proj} PROJ contributors (2026): \textit{PROJ coordinate transformation software library}. \url{https://proj.org/}
+
+\bibitem{pyvista} SULLIVAN, C. B., KASZYNSKI, A. (2019): PyVista: 3D plotting and mesh analysis through a streamlined interface for the Visualization Toolkit (VTK). \textit{Journal of Open Source Software}, 4(37), 1450.
+
+\bibitem{esri} ESRI (2026): \textit{World Continents}. \url{https://hub.arcgis.com/datasets/esri::world-continents/about}
+
+\end{thebibliography}
+\end{document}

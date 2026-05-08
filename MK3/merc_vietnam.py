@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import geopandas as gpd
 
-SHP_PATH = r"C:\Users\vanto\Desktop\Skola\UK\Magistr\Matkarto\Úloha_3\SHP\Vietnam2.shp"
+SHP_PATH = r"C:\Users\vanto\Desktop\Skola\UK\Magistr\Matkarto\Úloha_3\SHP\Vietnam.shp"
 
 #Points on the quator
 u1 = 11.1388*pi/180

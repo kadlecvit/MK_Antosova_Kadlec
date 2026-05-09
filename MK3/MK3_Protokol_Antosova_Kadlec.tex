@@ -1,0 +1,428 @@
+% Czech and fonts
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[czech]{babel}
+\usepackage{lmodern}
+
+% Margins and colors
+\usepackage[top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% Code listings
+\usepackage{listings}
+\lstset{
+    backgroundcolor=\color{white},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=none,
+    xleftmargin=1cm,
+    xrightmargin=0.5cm,
+    aboveskip=4pt,
+    belowskip=4pt,
+}
+
+% Hyperlinks
+\usepackage[hidelinks]{hyperref}
+
+% Header and footer
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[C]{\small\itshape Úloha č. 3 \quad Matematická kartografie}
+\fancyfoot[C]{\thepage}
+
+% Spacing
+\usepackage{setspace}
+\setstretch{1.5}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{tabularx}
+
+\begin{document}
+
+% Titulni strana
+\begin{titlepage}
+    \centering
+
+    {\large Přírodovědecká fakulta}\\[0.3cm]
+    {\large Univerzita Karlova}\\[3cm]
+
+    \includegraphics[width=0.425\textwidth]{imageUK.png}\\[3cm]
+
+    {\LARGE\bfseries Srovnání konformních kartografických\\zobrazení pro Vietnam a Kambodžu}\\[0.5cm]
+    {\large Matematická kartografie}\\[4cm]
+
+    {\large Kristýna Antošová, Vít Kadlec}\\[0.5cm]
+    {\normalsize 1.N-GKDPZ}\\[0.3cm]
+    {\normalsize Praha 2026}
+
+    \vfill
+\end{titlepage}
+
+% Zadani
+\section{Zadání}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{zadani.png}
+\label{fig:zadani}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{Hodnoceni.png}
+\label{fig:hodnoceni}
+\end{figure}
+
+\noindent V rámci zadání byly řešeny všechny výše zmíněné bonusové úlohy, kromě \textit{Matematická definice kartografického pólu (kuželové zobrazení)}.
+\newpage
+
+\newpage
+
+% Teoreticky zaklad
+\section{Popis a rozbor problému}
+
+Cílem úlohy je porovnat tři jednoduchá konformní zobrazení a~posoudit jejich vhodnost pro znázornění zvolených států. Hodnocení je založeno na~analýze hodnot délkového zkreslení na~okrajových rovnoběžkách území. Pro znázornění státu s~dominantním směrem byl zvolen Vietnam, pro znázornění státu bez dominantního směru Kambodža. Všechna zobrazení jsou navržena v~obecné poloze.
+
+\subsection{Použitá symbolika}
+
+Pro všechna zobrazení byly označeny tyto společné parametry:
+\begin{itemize}
+    \item poloměr referenční koule $R$,
+    \item zeměpisné souřadnice $u$, $v$ obecného bodu $P$,
+    \item pravoúhlé souřadnice $x$, $y$ obrazu bodu $P'$ v~rovině mapy,
+    \item zeměpisné souřadnice $u_k$, $v_k$ kartografického pólu $K$,
+    \item kartografické souřadnice $\check{s}$, $d$ bodu $P$,
+    \item kartografická šířka $\check{s}_0$ jedné nezkreslené rovnoběžky,
+    \item kartografické šířky $\check{s}_1, \check{s}_2$ dvou nezkreslených rovnoběžek,
+    \item konstanta zobrazení $c$.
+\end{itemize}
+
+\subsection{Válcové konformní zobrazení}
+
+Zobrazovací rovnice Mercatorova zobrazení v~obecné poloze zní:
+\begin{align}
+    x &= R \cdot \cos \check{s}_0 \cdot d,\\
+    y &= R \cdot \ln \tan\!\left( \tfrac{\check{s}}{2} + 45^{\circ}\right).
+\end{align}
+
+Kartografická šířka $\check{s}_0$ nezkreslené rovnoběžky je volena tak, aby absolutní hodnota zkreslení $\nu$ na~severním i~jižním okraji a~na kartografickém rovníku byla stejná. Z~podmínky $m_r^s + m_r^r = 2$ plyne:
+\begin{equation}
+    \cos \check{s}_0 = \frac{2 \cos \check{s}_s}{1 + \cos \check{s}_s},
+\end{equation}
+kde $\check{s}_s \equiv \check{s}_{okr}$ je kartografická šířka okrajové rovnoběžky. Druhá nezkreslená rovnoběžka je symetrická vůči kartografickému rovníku ($-\check{s}_0$).
+
+Středem území je veden kartografický rovník (ortodroma). Z~bodů $P_1 = [u_1, v_1]$ a~$P_2 = [u_2, v_2]$ ležících na~tomto rovníku se za~pomoci kosinové věty pro sférický trojúhelník $\triangle(S, P_1, P_2)$ určí souřadnice kartografického pólu $K$:
+\begin{align}
+    \tan v_k &= \frac{\tan u_1 \cos v_2 - \tan u_2 \cos v_1}{\tan u_2 \sin v_1 - \tan u_1 \sin v_2},\\
+    \tan u_k &= -\frac{\cos(v_1 - v_k)}{\tan u_1} = -\frac{\cos(v_2 - v_k)}{\tan u_2}.
+\end{align}
+
+Pro libovolný bod $P_3 = [u_3, v_3]$ na okrajové rovnoběžce se kartografická šířka $\check{s}_s$ určí ze~vztahu:
+\begin{equation}
+    \check{s}_s = \arcsin\!\left[\sin u_3 \sin u_k + \cos u_3 \cos u_k \cos(v_3 - v_k)\right].
+\end{equation}
+
+Měřítko a~zkreslení délek jsou potom:
+\begin{equation}
+    m = \frac{\cos \check{s}_0}{\cos \check{s}}, \qquad \nu = m - 1.
+\end{equation}
+
+\subsection{Kuželové konformní zobrazení}
+
+Zobrazovací rovnice Lambertova kuželového konformního zobrazení v~obecné poloze:
+\begin{align}
+    \rho &= \rho_0 \left( \frac{\tan(\check{s}_0/2 + 45^{\circ})}{\tan(\check{s}/2 + 45^{\circ})} \right)^{\!c},\\
+    \varepsilon &= c \cdot d.
+\end{align}
+
+Konstanty $\rho_0$ a~$c$ jsou určeny ze~dvou podmínek. Z~podmínky $m_r^s = m_r^j = 1+\nu$ na~okrajových rovnoběžkách plyne:
+\begin{equation}
+    c = \frac{\log\cos \check{s}_s - \log\cos \check{s}_j}{\log\tan(\check{s}_j/2 + 45^{\circ}) - \log\tan(\check{s}_s/2 + 45^{\circ})},
+    \qquad \sin \check{s}_0 = c.
+\end{equation}
+
+Konstanta $\rho_0$ je dána:
+\begin{equation}
+    \rho_0 = \frac{2R \cos \check{s}_0 \cos \check{s}_s \tan^c(\check{s}_s/2 + 45^{\circ})}{c\,\big[\cos \check{s}_0 \tan^c(\check{s}_0/2 + 45^{\circ}) + \cos \check{s}_s \tan^c(\check{s}_s/2 + 45^{\circ})\big]}.
+\end{equation}
+
+Kartografický pól $K$ je středem dvou soustředných kružnic ohraničujících území. Souřadnice $\check{s}_s$, $\check{s}_j$ se určí transformací bodů $P_1$, $P_2$ ležících na~okrajových rovnoběžkách. Měřítko délek je:
+\begin{equation}
+    m = \frac{c \rho}{R \cos \check{s}}.
+\end{equation}
+
+\subsection{Azimutální konformní zobrazení}
+
+Zobrazovací rovnice stereografické projekce v~obecné poloze:
+\begin{align}
+    \rho &= 2R \cos^2\!\tfrac{\psi_0}{2} \cdot \tan\!\tfrac{\psi}{2},\\
+    \varepsilon &= d,
+\end{align}
+kde $\psi = 90^{\circ} - \check{s}$ je doplněk kartografické šířky do~$90^{\circ}$.
+
+Pro minimalizaci zkreslení se zavádí multiplikační konstanta $\mu$ tak, aby zkreslení v~pólu bylo $\mu = 1-\nu$ a~na okraji území $1+\nu$:
+\begin{equation}
+    \mu = \frac{2 \cos^2(\psi_j/2)}{1 + \cos^2(\psi_j/2)}, \qquad \psi_0 = 2\arccos\sqrt{\mu}.
+\end{equation}
+
+Měřítko délek je dáno:
+\begin{equation}
+    m_r = \frac{\mu}{\cos^2(\psi/2)}.
+\end{equation}
+
+Kartografický pól $K$ je středem nejmenší kružnice opsané území.
+
+\newpage
+
+% Postup
+\section{Postup a~výpočty}
+
+Hranice obou států byly staženy ze~zdroje \textit{datacatalog.worldbank.org} (2024) ve~formátu shapefile. Veškeré výpočty i~vykreslování ekvideformát byly provedeny v~Pythonu (knihovny \texttt{numpy}, \texttt{scipy}, \texttt{geopandas}, \texttt{matplotlib}).
+
+\subsection{Válcové konformní zobrazení}
+
+Středem území byla vedena ortodroma (kartografický rovník), na~níž byly identifikovány body $P_1$, $P_2$. Body $P_3$, $P_4$ byly vybrány na~severní a~jižní okrajové rovnoběžce. Z~$P_1$, $P_2$ byly analytickým výpočtem získány souřadnice kartografického pólu $K$ podle vztahů~(15) a~(16). Návrh zobrazení a~souřadnice použitých bodů jsou znázorněny na~obrázcích \ref{fig:setup_merc_v} a~\ref{fig:setup_merc_c} a~v~tabulce~\ref{tab:merc}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.4\textwidth]{setup_merc_vietnam.png}
+\caption{Vytvořený kartografický rovník a~body $P_1$--$P_4$ pro Vietnam.}
+\label{fig:setup_merc_v}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{setup_merc_cambodia.png}
+\caption{Vytvořený kartografický rovník a~body $P_1$--$P_4$ pro Kambodžu.}
+\label{fig:setup_merc_c}
+\end{figure}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{c|cc|cc}
+\toprule
+& \multicolumn{2}{c|}{\textbf{Vietnam}} & \multicolumn{2}{c}{\textbf{Kambodža}} \\
+\textbf{bod} & $u\,[^{\circ}]$ & $v\,[^{\circ}]$ & $u\,[^{\circ}]$ & $v\,[^{\circ}]$ \\
+\midrule
+$P_1$ & $11{,}1388$  & $106{,}6404$ & $12{,}5912$ & $106{,}2433$ \\
+$P_2$ & $21{,}3420$  & $105{,}1528$ & $12{,}4242$ & $103{,}7225$ \\
+$P_3$ & $19{,}5372$  & $108{,}5282$ & $14{,}4478$ & $103{,}6592$ \\
+$P_4$ & $11{,}8146$  & $103{,}6342$ & $10{,}5431$ & $106{,}2961$ \\
+\bottomrule
+\end{tabular}
+\caption{Souřadnice bodů použitých pro válcové konformní zobrazení.}
+\label{tab:merc}
+\end{table}
+
+\subsection{Kuželové konformní zobrazení}
+
+Pro kuželové konformní zobrazení v~obecné poloze bylo nutné uzavřít území do co nejužšího pásu mezi dvěma rovnoběžkami (soustředné kružnice). Středem kružnic je kartografický pól $K$, jehož souřadnice byly odečteny z~mapového podkladu v~SW ArcGIS Pro společně s~body $P_1$, $P_2$ ležícími na~okrajových rovnoběžkách.
+
+Souřadnice kartografického pólu a~okrajových bodů jsou shrnuty v~tabulce~\ref{tab:lcc}, vizualizace na~obrázcích~\ref{fig:setup_lcc_v} a~\ref{fig:setup_lcc_c}.
+
+\newpage
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.55\textwidth]{setup_lcc_vietnam.png}
+\caption{Vytvořené kartografické rovnoběžky a~pól $K$ pro Vietnam.}
+\label{fig:setup_lcc_v}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.55\textwidth]{setup_lcc_cambodia.png}
+\caption{Vytvořené kartografické rovnoběžky a~pól $K$ pro Kambodžu.}
+\label{fig:setup_lcc_c}
+\end{figure}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{c|cc|cc}
+\toprule
+& \multicolumn{2}{c|}{\textbf{Vietnam}} & \multicolumn{2}{c}{\textbf{Kambodža}} \\
+\textbf{bod} & $u\,[^{\circ}]$ & $v\,[^{\circ}]$ & $u\,[^{\circ}]$ & $v\,[^{\circ}]$ \\
+\midrule
+$K$   & $14{,}8482$ & $97{,}6573$  & $16{,}4267$ & $104{,}3286$\\
+$P_1$ & $19{,}3095$ & $103{,}8777$ & $14{,}4588$ & $103{,}6598$\\
+$P_2$ & $21{,}4867$ & $108{,}0643$ & $10{,}4227$ & $104{,}4703$\\
+\bottomrule
+\end{tabular}
+\caption{Souřadnice kartografického pólu a~bodů na~okrajových rovnoběžkách pro kuželové zobrazení.}
+\label{tab:lcc}
+\end{table}
+
+\subsection{Azimutální konformní zobrazení}
+
+Pro stereografickou projekci byl kartografický pól $K$ určen jako střed nejmenší opsané kružnice konvexní obálky polygonu pomocí Welzlova rekurzivního algoritmu. Souřadnice pólů a~okrajových bodů shrnuje tabulka~\ref{tab:stereo}, vizualizace na~obrázcích \ref{fig:setup_stereo_v} a~\ref{fig:setup_stereo_c}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{setup_stereo_vietnam.png}
+\caption{Vytvořená kartografická rovnoběžka a~pól $K$ pro Vietnam (stereo).}
+\label{fig:setup_stereo_v}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{setup_stereo_cambodia.png}
+\caption{Vytvořená kartografická rovnoběžka a~pól $K$ pro Kambodžu (stereo).}
+\label{fig:setup_stereo_c}
+\end{figure}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{c|cc|cc}
+\toprule
+& \multicolumn{2}{c|}{\textbf{Vietnam}} & \multicolumn{2}{c}{\textbf{Kambodža}} \\
+\textbf{bod} & $u\,[^{\circ}]$ & $v\,[^{\circ}]$ & $u\,[^{\circ}]$ & $v\,[^{\circ}]$ \\
+\midrule
+$K$       & $15{,}9417$ & $105{,}1117$ & $12{,}9219$ & $105{,}2297$ \\
+$\psi_j$ (poloměr okrajové rovnoběžky) & \multicolumn{2}{c|}{$7{,}3866^{\circ}$} & \multicolumn{2}{c}{$2{,}9270^{\circ}$} \\
+\bottomrule
+\end{tabular}
+\caption{Souřadnice kartografického pólu a~úhlový poloměr okrajové rovnoběžky pro azimutální zobrazení.}
+\label{tab:stereo}
+\end{table}
+
+\newpage
+
+\section{Použité skripty}
+
+Veškeré výpočty a~vykreslování byly realizovány v~jazyce Python s~následujícími skripty:
+
+\begin{itemize}
+    \item \texttt{merc\_vietnam.py} -- válcové konformní zobrazení pro Vietnam,
+    \item \texttt{merc\_cambodia.py} -- válcové konformní zobrazení pro Kambodžu,
+    \item \texttt{lcc\_vietnam.py} -- kuželové konformní zobrazení pro Vietnam,
+    \item \texttt{lcc\_cambodia.py} -- kuželové konformní zobrazení pro Kambodžu,
+    \item \texttt{stereo.py} -- azimutální konformní zobrazení (univerzální, vstupní shapefile nastavitelný proměnnou \texttt{SHP\_PATH}).
+\end{itemize}
+
+Skripty pro Mercatorovo zobrazení obsahují čtyři klíčové body $P_1$--$P_4$ odečtené z~mapového podkladu v~ArcGIS Pro; vzorce pro výpočet pólu z~$P_1$, $P_2$ jsou analytické. Skripty pro kuželové zobrazení používají souřadnice pólu $K$ a~bodů $P_1$, $P_2$ rovněž odečtené z~mapy. Skript pro stereografickou projekci určuje pól automaticky z~dat shapefile pomocí Welzlova algoritmu pro nejmenší opsanou kružnici (implementace s~pomocí Claude Opus 4.6). Vykreslování ekvideformát ve~všech skriptech používá \texttt{matplotlib.contour} nad pravidelnou mřížkou v~rovině mapy.
+
+\newpage
+
+% Vysledky
+\section{Výsledky}
+
+Pro vybrané státy byly u~každého zobrazení vykresleny ekvideformáty délkového zkreslení s~vhodně zvoleným krokem. Porovnání jednotlivých zobrazení je viditelné na~obrázcích \ref{fig:eq_merc_v}--\ref{fig:eq_stereo_c}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{merc_vietnam.png}
+\caption{Ekvideformáty válcového zobrazení pro Vietnam.}
+\label{fig:eq_merc_v}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.65\textwidth]{merc_cambodia.png}
+\caption{Ekvideformáty válcového zobrazení pro Kambodžu.}
+\label{fig:eq_merc_c}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{lcc_vietnam.png}
+\caption{Ekvideformáty kuželového zobrazení pro Vietnam.}
+\label{fig:eq_lcc_v}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.6\textwidth]{lcc_cambodia.png}
+\caption{Ekvideformáty kuželového zobrazení pro Kambodžu.}
+\label{fig:eq_lcc_c}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.4\textwidth]{stereo_vietnam.png}
+\caption{Ekvideformáty azimutálního zobrazení pro Vietnam.}
+\label{fig:eq_stereo_v}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.6\textwidth]{stereo_cambodia.png}
+\caption{Ekvideformáty azimutálního zobrazení pro Kambodžu.}
+\label{fig:eq_stereo_c}
+\end{figure}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{l|c|c}
+\toprule
+\textbf{Zobrazení / bod} & \textbf{Vietnam}\,$[\textrm{mm/km}]$ & \textbf{Kambodža}\,$[\textrm{mm/km}]$ \\
+\midrule
+\multicolumn{3}{c}{\textbf{Válcové (Mercator)}} \\
+\midrule
+$P_1$ (kart. rovník)        & $-0{,}638917$ & $-0{,}311640$ \\
+$P_2$ (kart. rovník)        & $-0{,}638917$ & $-0{,}311640$ \\
+$P_3$ (sev. okraj)          & $+0{,}638917$ & $+0{,}311640$ \\
+$P_4$ (již. okraj)          & $+0{,}574398$ & $+0{,}326887$ \\
+\midrule
+\multicolumn{3}{c}{\textbf{Kuželové (Lambert)}} \\
+\midrule
+střed                       & $-0{,}382925$ & $-0{,}303687$ \\
+$P_1$ (sev. okraj)          & $+0{,}382925$ & $+0{,}303687$ \\
+$P_2$ (již. okraj)          & $+0{,}382925$ & $+0{,}303687$ \\
+\midrule
+\multicolumn{3}{c}{\textbf{Azimutální (stereografická)}} \\
+\midrule
+pól $K$                     & $-2{,}078997$ & $-0{,}326244$ \\
+nezkreslená rovnoběžka      & $0$           & $0$           \\
+$P_1$ (okrajová)            & $+2{,}078997$ & $+0{,}326244$ \\
+\bottomrule
+\end{tabular}
+\caption{Hodnoty délkového zkreslení v~mm/km zaokrouhlené na~$1\cdot 10^{-6}$.}
+\label{tab:vysledky}
+\end{table}
+
+\clearpage
+
+Při porovnání hodnot délkového zkreslení v~tabulce~\ref{tab:vysledky} jsou patrné výrazné rozdíly mezi oběma státy.
+
+Pro stát protáhlého tvaru vyšlo nejlépe kuželové zobrazení s~maximální absolutní hodnotou délkového zkreslení $\pm 0{,}3829\,\textrm{mm/km}$. Druhé bylo válcové zobrazení s $\pm 0{,}6389\,\textrm{mm/km}$ a~jednoznačně nejhorší stereografická projekce s~hodnotou $\pm 2{,}0790\,\textrm{mm/km}$ -- tedy více než pětkrát horší než kuželové zobrazení. Tento výsledek odpovídá teoretickému očekávání: pro protáhlé území jsou nejvhodnější zobrazení, jejichž ekvideformáty (křivky stejného zkreslení) tvoří úsečky či mírně zakřivené oblouky orientované podél hlavní osy území. Vzhledem k mírně konkávnímu tvaru Vietnamu dokáže~kuželové zobrazení s~pólem mimo území lépe obtočit celý stát do~úzkého mezikruží, a tak přináší mírně lepší výsledky, než zobrazení válcové.
+
+Pro stát bez dominantního směru Kambodža jsou výsledky všech tří zobrazení velmi podobné. Nejmenší zkreslení dává kuželové zobrazení ($\pm 0{,}3037\,\textrm{mm/km}$), těsně následované stereografickou projekcí ($\pm 0{,}3262\,\textrm{mm/km}$) a~Mercatorem ($\pm 0{,}3269\,\textrm{mm/km}$). Pro kompaktní území jsou všechna tři konformní zobrazení s~optimálně volenými parametry srovnatelná. Vhodnost stereografické projekce pro území bez dominantního směru odpovídá faktu, že ekvideformáty jsou kružnice se~středem v~kartografickém pólu, a~pro téměř kruhový stát jsou tyto kružnice přibližně shodné s~hranicí, čímž se dosáhne minimálního zkreslení.
+
+
+\newpage
+
+% Zhodnoceni
+\section{Závěr}
+
+V~rámci této úlohy byla porovnána tři jednoduchá konformní zobrazení pro vybrané státy a~vyhodnocen vliv tvaru území na~volbu zobrazení. Pro znázornění státu s~dominantním směrem (Vietnam) a~bez dominantního směru (Kambodža) byly použity:
+\begin{itemize}
+    \item válcové konformní zobrazení se dvěma nezkreslenými rovnoběžkami (Mercatorovo zobrazení),
+    \item kuželové konformní zobrazení se dvěma nezkreslenými rovnoběžkami (Lambertovo kuželové konformní zobrazení),
+    \item azimutální konformní zobrazení s~jednou nezkreslenou rovnoběžkou (stereografická projekce).
+\end{itemize}
+
+Výsledky potvrzují základní poznatek matematické kartografie -- pro protáhlá území volíme válcové nebo kuželové zobrazení (jejichž ekvideformáty kopírují tvar území v~podobě úseček nebo kruhových oblouků), pro kompaktní území můžeme zvolit azimutální zobrazení (s~kruhovými ekvideformátami). Pro tato dvě konkrétní území má kuželové zobrazení mírnou výhodu v~obou případech, protože jeho ekvideformáty jsou flexibilnější -- mohou být kruhovými oblouky o~velmi malém poloměru pro kompaktní území, či být téměř paralelní pro protáhlá území.
+
+\newpage
+\renewcommand{\refname}{Zdroje}
+\begin{thebibliography}{9}
+
+\bibitem{bayer_navod} BAYER, T. (2026): \textit{Srovnání konformních kartografických zobrazení pro zvolené území (návod na cvičení)}. Výukový materiál pro předmět Matematická kartografie, Katedra aplikované geoinformatiky a kartografie, Přírodovědecká fakulta UK.
+
+\bibitem{bayer_valc} BAYER, T. (2026): \textit{Jednoduchá válcová zobrazení. Válcové projekce. Gaussovo zobrazení}. Přednáška pro předmět Matematická kartografie, Přírodovědecká fakulta UK.
+
+\bibitem{bayer_kuz} BAYER, T. (2026): \textit{Jednoduchá kuželová zobrazení. Křovákovo zobrazení}. Přednáška pro předmět Matematická kartografie, Přírodovědecká fakulta UK.
+
+\bibitem{bayer_azim} BAYER, T. (2026): \textit{Jednoduchá azimutální zobrazení. Azimutální projekce. UPS}. Přednáška pro předmět Matematická kartografie, Přírodovědecká fakulta UK.
+
+\bibitem{worldbank_boundaries} WORLD BANK (2024): \textit{World Bank Official Boundaries}. \url{https://datacatalog.worldbank.org/search/dataset/0038272/world-bank-official-boundaries}
+
+\bibitem{snyder} SNYDER, J.~P. (1987): \textit{Map Projections --- A Working Manual}. U.S. Geological Survey Professional Paper 1395.
+
+\end{thebibliography}
+\end{document}

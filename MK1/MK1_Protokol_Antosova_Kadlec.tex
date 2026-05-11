@@ -1,0 +1,284 @@
+% Czech and fonts
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc} 
+\usepackage[czech]{babel}
+\usepackage{lmodern}
+
+% Margins and colors
+\usepackage[top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
+\usepackage{graphicx} 
+\usepackage{xcolor} 
+
+% Code listings
+\usepackage{listings} 
+\lstset{
+    backgroundcolor=\color{white},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=none,
+    xleftmargin=1cm,
+    xrightmargin=0.5cm,
+    aboveskip=4pt,
+    belowskip=4pt,
+}
+
+% Hyperlinks 
+\usepackage[hidelinks]{hyperref}
+
+% Header and footer
+\usepackage{fancyhdr} 
+\pagestyle{fancy} 
+\fancyhf{} 
+\renewcommand{\headrulewidth}{0.4pt} 
+\renewcommand{\footrulewidth}{0pt} 
+\fancyhead[C]{\small\itshape Úloha č. 1 \quad Matematická kartografie} 
+\fancyfoot[C]{\thepage}
+
+% Spacing
+\usepackage{setspace} 
+\setstretch{1.5}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{tabularx}
+
+\begin{document}
+
+% Titulní strana
+\begin{titlepage}
+    \centering
+
+    {\large Přírodovědecká fakulta}\\[0.3cm]
+    {\large Univerzita Karlova}\\[3cm]
+
+    \includegraphics[width=0.425\textwidth]{imageUK.png}\\[3cm]
+
+    {\LARGE\bfseries Výpočet souřadnic bodů v~rovině Křovákova zobrazení}\\[0.5cm]
+    {\large Matematická kartografie}\\[4cm]
+
+    {\large Kristýna Antošová, Vít Kadlec}\\[0.5cm]
+    {\normalsize 1.N-GKDPZ}\\[0.3cm]
+    {\normalsize Praha 2026}
+
+    \vfill
+\end{titlepage}
+
+% Zadání
+\section{Zadání}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=1\textwidth]{Zadani.png}
+\label{fig:Zadani}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=1\textwidth]{Hodnocení.png}
+\label{fig:Hodnoceni}
+\end{figure}
+\noindent V rámci zadání byla řešena pouze základní úloha  \textit{Výpočet souřadnic bodu v rovině Křovákova zobrazení + zkreslení}. Bonusové úlohy řešeny nebyly.
+
+\newpage
+
+% Popis a rozbor problému
+\section{Popis a~rozbor problému}
+
+Transformace bodu $P' = [\varphi', \lambda']$ ze~systému zeměpisných souřadnic elipsoidu WGS-84 na bod $P = [Y, X]$ v~rovině Křovákova zobrazení (S-JTSK) probíhá v~následujících fázích:
+
+\begin{enumerate}
+    \item Převod zeměpisných souřadnic $[\varphi, \lambda]$ na geocentrické prostorové souřadnice $[X, Y, Z]$.
+    \item Prostorová podobnostní (Helmertova) transformace mezi elipsoidy WGS-84 a~Bessel.
+    \item Převod geocentrických souřadnic zpět na zeměpisné souřadnice Besselova elipsoidu.
+    \item Gaussovo konformní zobrazení na~Gaussově kouli.
+    \item Transformace do~šikmé polohy kartografického pólu.
+    \item Lambertovo konformní kuželové zobrazení do~roviny.
+\end{enumerate}
+
+\subsection{Převod zeměpisných souřadnic na geocentrické}
+
+Prostorové geocentrické souřadnice $(X, Y, Z)$ bodu na povrchu referenčního elipsoidu daného parametry $(a, b)$ lze určit ze~vztahu
+\begin{equation}
+    \mathbf{P} = \begin{pmatrix} X \\ Y \\ Z \end{pmatrix}
+    = N \begin{pmatrix} \cos\varphi\cos\lambda \\ \cos\varphi\sin\lambda \\ (1-e^2)\sin\varphi \end{pmatrix},
+\end{equation}
+kde $N$ je příčný poloměr křivosti
+\begin{equation}
+    N = \frac{a}{W}, \qquad W = \sqrt{1 - e^2 \sin^2\varphi},
+\end{equation}
+a~$e^2$ je první excentricita elipsoidu
+\begin{equation}
+    e^2 = \frac{a^2 - b^2}{a^2}.
+\end{equation}
+
+\subsection{Helmertova prostorová podobnostní transformace}
+
+Transformace mezi geocentrickými souřadnicemi WGS-84 a~Besselova elipsoidu je dána sedmiprvkovou Helmertovou transformací
+\begin{equation}
+    \begin{pmatrix} X \\ Y \\ Z \end{pmatrix}_{\mathrm{Bes}}
+    = m \begin{pmatrix} 1 & \omega_z & -\omega_y \\ -\omega_z & 1 & \omega_x \\ \omega_y & -\omega_x & 1 \end{pmatrix}
+    \begin{pmatrix} X \\ Y \\ Z \end{pmatrix}_{\mathrm{WGS}}
+    + \begin{pmatrix} \Delta X \\ \Delta Y \\ \Delta Z \end{pmatrix},
+\end{equation}
+kde matice rotace využívá linearizaci $\sin\omega \approx \omega$, $\cos\omega \approx 1$ pro malé hodnoty rotací. Parametry transformace jsou:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{l r}
+\toprule
+\textbf{Parametr} & \textbf{Hodnota} \\
+\midrule
+$\omega_x$ & $4{,}9984''$ \\
+$\omega_y$ & $1{,}5867''$ \\
+$\omega_z$ & $5{,}2611''$ \\
+$m-1$ & $-3{,}5623 \times 10^{-6}$ \\
+$\Delta X$ & $-570{,}8285$ m \\
+$\Delta Y$ & $-85{,}6769$ m \\
+$\Delta Z$ & $-462{,}8420$ m \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Převod geocentrických souřadnic na zeměpisné}
+
+Zeměpisná délka se určí ze~vztahu
+\begin{equation}
+    \tan\lambda = \frac{Y}{X}.
+\end{equation}
+Zeměpisná šířka se získá z~aproximace
+\begin{equation}
+    \tan\varphi = \frac{Z}{(1-e^2)\sqrt{X^2 + Y^2}}.
+\end{equation}
+
+\subsection{Gaussovo konformní zobrazení Besselova elipsoidu na kouli}
+
+Zeměpisná délka se převede na délku od Ferra: $\lambda_{\mathrm{Ferro}} = \lambda_{\mathrm{Bes}} + 17^{\circ}40'$. Následně se bod zobrazí na Gaussovu kouli o~poloměru $R$ pomocí sférických souřadnic $(u, v)$:
+\begin{equation}
+    \tan\left(\frac{u}{2} + \frac{\pi}{4}\right)
+    = \frac{1}{k} \left[
+    \tan\left(\frac{\varphi}{2} + \frac{\pi}{4}\right)
+    \cdot \left(\frac{1 - e\sin\varphi}{1 + e\sin\varphi}\right)^{e/2}
+    \right]^\alpha, \qquad
+    v = \alpha \cdot \lambda_{\mathrm{Ferro}},
+\end{equation}
+kde $\alpha$, $k$, $R$ jsou konstanty odvozené z~parametrů Besselova elipsoidu a~základní rovnoběžky $\varphi_0 = 49{,}5^{\circ}$.
+
+\subsection{Transformace do~šikmé polohy}
+
+Bod $(u, v)$ na Gaussově kouli se transformuje do~šikmé polohy $(s, d)$ vzhledem ke~kartografickému pólu $K = [u_k, v_k]$. Ze~sférické trigonometrie plyne:
+\begin{equation}
+    \sin s = \sin u \cdot \sin u_k + \cos u \cdot \cos u_k \cdot \cos(v_k - v),
+\end{equation}
+\begin{equation}
+    \tan d = \frac{\sin(v_k - v) \cdot \cos u}{-\sin u \cdot \cos u_k + \cos u \cdot \cos(v_k - v) \cdot \sin u_k}.
+\end{equation}
+Kartografický pól Křovákova zobrazení má souřadnice $u_k = 59^{\circ}42'42{,}6969''$, $v_k = 42^{\circ}31'31{,}41725''$.
+
+\subsection{Lambertovo konformní kuželové zobrazení}
+
+V~závěrečném kroku se šikmé souřadnice zobrazí do~roviny Křovákova zobrazení:
+\begin{equation}
+    \rho = \rho_0 \cdot \left(\frac{\tan(s_0/2 + \pi/4)}{\tan(s/2 + \pi/4)}\right)^c, \qquad
+    \varepsilon = c \cdot d,
+\end{equation}
+kde $s_0 = 78{,}5^{\circ}$, $c = \sin s_0$, $\rho_0 = 0{,}9999 \cdot R / \tan s_0$. Výsledné rovinné souřadnice jsou:
+\begin{equation}
+    Y = \rho \sin\varepsilon, \qquad X = \rho \cos\varepsilon.
+\end{equation}
+
+\subsection{Délkové zkreslení}
+
+Délkové zkreslení $m$ v~daném bodě je dáno vztahem
+\begin{equation}
+    m = \frac{c \cdot \rho}{R \cdot \cos s},
+\end{equation}
+přičemž hodnota $m-1$ vyjadřuje relativní odchylku od~nezkreslené délky.
+
+\newpage
+
+% Výsledky
+\section{Výsledky}
+
+Výsledky transformace obou bodů shrnuje tabulka~\ref{tab:vysledky}. Vstupem jsou souřadnice změřené pomocí integrovaného GPS modulu v mobilním telefonu na dvou trigonometrických bodech v~systému WGS-84. Výstupem jsou rovinné souřadnice v~S-JTSK a~délkové zkreslení.
+
+\begin{table}[h!]
+\centering
+\caption{Výsledky transformace WGS-84 $\rightarrow$ S-JTSK}
+\label{tab:vysledky}
+\begin{tabularx}{\textwidth}{X r r}
+\toprule
+\textbf & \textbf{Bod $P_1$} & \textbf{Bod $P_2$} \\
+\midrule
+\multicolumn{3}{l}{\textit{Vstup (WGS-84)}} \\
+$\varphi$ & $50{,}064270^{\circ}$ & $50{,}050572^{\circ}$ \\
+$\lambda$ & $14{,}419012^{\circ}$ & $14{,}384470^{\circ}$ \\
+\midrule
+\multicolumn{3}{l}{\textit{Výstup (S-JTSK)}} \\
+$Y$ [m] & $743\,320{,}365$ & $745\,978{,}602$ \\
+$X$ [m] & $1\,045\,546{,}844$ & $1\,046\,718{,}237$ \\
+\midrule
+\multicolumn{3}{l}{\textit{Délkové zkreslení}} \\
+$m - 1$ & $-9{,}715 \times 10^{-5}$ & $-9{,}801 \times 10^{-5}$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\noindent Záporné hodnoty délkového zkreslení $m-1$ znamenají, že délky v~rovině zobrazení jsou nepatrně kratší než odpovídající délky na~elipsoidu, což odpovídá vlastnostem Křovákova zobrazení v~oblasti Prahy.
+
+\subsection{Vizualizace}
+
+Obrazy bodů $P_1$ a~$P_2$ byly vizualizovány s~podkladem mapy OpenStreetMap. Na~každém výkresu je vyznačen vstupní bod (bílý kroužek) a~jeho transformovaný obraz v~S-JTSK (modrý trojúhelník). Oba symboly leží na~stejném fyzickém místě, protože transformace zachovává polohu bodu.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{P1_map.png}
+\caption{Vizualizace bodu $P_1$ -- WGS-84 a~S-JTSK.}
+\label{fig:p1}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{P2_map.png}
+\caption{Vizualizace bodu $P_2$ -- WGS-84 a~S-JTSK.}
+\label{fig:p2}
+\end{figure}
+
+\clearpage
+
+% Skripty
+\section{Skripty}
+
+Výpočty a~vizualizace byly realizovány v~jazyce Python.
+
+\begin{itemize}
+    \item \texttt{uvtosd.py} --- transformace bodu $[u, v]$ do~šikmé polohy zobrazení $[s, d]$ vzhledem ke~kartografickému pólu $K = [u_k, v_k]$, implementace rovnic~(8) a~(9).
+    \item \texttt{u1.py} --- hlavní skript obsahující:
+    \begin{itemize}
+        \item funkci \texttt{WGSToJTSK} realizující celý transformační řetězec WGS-84 $\rightarrow$ S-JTSK dle rovnic~(1)--(11) včetně výpočtu délkového zkreslení~(12),
+        \item funkce \texttt{fetch\_osm\_tiles}, \texttt{\_deg2tile}, \texttt{\_tile2deg} pro stažení a~složení mapových dlaždic z~OpenStreetMap, funkce byly vytvořeny s pomocí modelu Claude Opus 4.6
+        \item funkci \texttt{visualize} pro vykreslení bodu na~mapovém podkladu. Funkce byla vytvořena s pomocí modelu Claude Opus 4.6
+    \end{itemize}
+\end{itemize}
+
+\newpage
+
+% Zhodnocení a závěr
+\section{Zhodnocení a~závěr}
+
+Byly vypočteny souřadnice bodů $P_1$ a~$P_2$ v~rovině Křovákova zobrazení (S-JTSK) ze~zeměpisných souřadnic změřených GPS v~systému WGS-84. Transformační řetězec zahrnuje převod na~geocentrické souřadnice, sedmiprvkovou Helmertovu transformaci na~Besselův elipsoid, Gaussovo konformní zobrazení na~sféru, transformaci do~šikmé polohy a~Lambertovo konformní kuželové zobrazení.
+
+Správnost výsledků byla ověřena porovnáním s~údaji z~databáze ČÚZK, přičemž odchylka nepřesahuje 1~m, což odpovídá přesnosti GPS měření. Délkové zkreslení $m-1$ dosahuje v~obou bodech záporných hodnot řádu $10^{-5}$, tedy délky v~rovině zobrazení jsou zkráceny přibližně o~0{,}01~\%.
+
+\newpage
+\renewcommand{\refname}{Zdroje} 
+\begin{thebibliography}{9}
+
+\bibitem{bayer_lcc} BAYER, T. (2026): \textit{Jednoduchá kuželová zobrazení. Křovákovo zobrazení}. Přednáška pro předmět Matematická kartografie, Katedra aplikované geoinformatiky a~kartografie, Přírodovědecká fakulta UK [cit.~11.5.2026].
+
+\bibitem{bayer_navod} BAYER, T. (2026): \textit{Transformace zeměpisných souřadnic mezi elipsoidy} (stručný návod k~úloze~1). Výukový materiál pro předmět Matematická kartografie, Katedra aplikované geoinformatiky a~kartografie, Přírodovědecká fakulta UK [cit.~11.5.202].
+
+\bibitem{osm} OpenStreetMap contributors (2026): \textit{OpenStreetMap}. \url{https://www.openstreetmap.org/} [cit.~11.5.2026]. Data dostupná pod licencí ODbL.
+
+\end{thebibliography}
+\end{document}

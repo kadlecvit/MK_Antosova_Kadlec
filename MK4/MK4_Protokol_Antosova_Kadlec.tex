@@ -1,0 +1,292 @@
+% Czech and fonts
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[czech]{babel}
+\usepackage{lmodern}
+
+% Margins and colors
+\usepackage[top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% Code listings
+\usepackage{listings}
+\lstset{
+    backgroundcolor=\color{white},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=none,
+    xleftmargin=1cm,
+    xrightmargin=0.5cm,
+    aboveskip=4pt,
+    belowskip=4pt,
+}
+
+% Hyperlinks
+\usepackage[hidelinks]{hyperref}
+
+% Header and footer
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[C]{\small\itshape Úloha č. 5 \quad Matematická kartografie}
+\fancyfoot[C]{\thepage}
+
+% Spacing
+\usepackage{setspace}
+\setstretch{1.5}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{tabularx}
+
+\begin{document}
+
+% Titulni strana
+\begin{titlepage}
+    \centering
+
+    {\large Přírodovědecká fakulta}\\[0.3cm]
+    {\large Univerzita Karlova}\\[3cm]
+
+    \includegraphics[width=0.425\textwidth]{imageUK.png}\\[3cm]
+
+    {\LARGE\bfseries Hodnocení kartografických zobrazení\\s~využitím variačních kritérií}\\[0.5cm]
+    {\large Matematická kartografie}\\[4cm]
+
+    {\large Kristýna Antošová, Vít Kadlec}\\[0.5cm]
+    {\normalsize 1.N-GKDPZ}\\[0.3cm]
+    {\normalsize Praha 2026}
+
+    \vfill
+\end{titlepage}
+
+% Zadani
+\section{Zadání}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{zadani_1.png}
+\label{fig:zadani1}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{zadani_2.png}
+\label{fig:zadani2}
+\end{figure}
+
+\noindent Zvoleným územním celkem je Jižní Amerika (č.~16).
+V rámci zadání byly zpracovány dvě úlohy: Hodnocení kartografických zobrazení s využitím variačních kritérií 20b a Vážená varianta kritérií. +5b
+\newpage
+
+% Teoreticky zaklad
+\section{Popis a~rozbor problému}
+
+Cílem úlohy je na~základě globálních variačních kritérií porovnat pět kartografických zobrazení a~rozhodnout o~jejich vhodnosti pro znázornění Jižní Ameriky. Hodnocení vychází z~poloos $a$, $b$ Tissotovy indikatrix, které představují extrémní délková zkreslení v~daném bodě a~slouží jako vstupní parametry variačních kritérií.
+
+\subsection{Použitá symbolika}
+
+Pro všechna zobrazení byly označeny tyto společné parametry:
+\begin{itemize}
+    \item poloměr referenční koule $R = 6\,380\,000$\,m,
+    \item zeměpisné souřadnice $u$ (šířka), $v$ (délka) obecného bodu $P$,
+    \item poloosy $a$, $b$ Tissotovy indikatrix v~bodě $P$,
+    \item zeměpisná šířka $u_0$ nezkreslené rovnoběžky,
+    \item měřítkové číslo $M = 100\,000\,000$.
+\end{itemize}
+
+\subsection{Lokální variační kritéria}
+
+\textit{Airyho kritérium} zohledňuje především vliv délkového zkreslení:
+\begin{equation}
+    h^2(u,v) = \frac{(a-1)^2 + (b-1)^2}{2}\,.
+\end{equation}
+
+\textit{Komplexní kritérium} kombinuje vliv délkového i~úhlového zkreslení prostřednictvím členu $a/b$:
+\begin{equation}
+    h^2(u,v) = \frac{|a-1|+|b-1|}{2} + \frac{a}{b} - 1\,.
+\end{equation}
+
+\subsection{Globální variační kritéria}
+
+Globální variační kritérium $H^2$ představuje střední hodnotu lokálního kritéria nad oblastí $\Omega$:
+\begin{equation}
+    H^2 = \frac{1}{(u_2 - u_1)(v_2 - v_1)} \int_{u_1}^{u_2}\int_{v_1}^{v_2} h^2 \cos u\, \mathrm{d}u\,\mathrm{d}v\,.
+\end{equation}
+
+V~praxi je používána diskrétní \textit{nevážená} varianta:
+\begin{equation}
+    H_1^2 = \frac{1}{n}\sum_{i=1}^{n} h^2(u_i, v_i)\,,
+\end{equation}
+a~\textit{vážená} varianta s~váhou $p_i = \cos u_i$ potlačující vliv polárních oblastí:
+\begin{equation}
+    H_2^2 = \frac{\sum_{i=1}^{n} p_i\, h^2(u_i, v_i)}{\sum_{i=1}^{n} p_i}\,.
+\end{equation}
+
+\subsection{Proměnné měřítkové číslo}
+
+Měřítkové číslo $M(u,v)$ jako funkce polohy je definováno:
+\begin{equation}
+    M(u,v) = \frac{M}{a(u,v)}\,,
+\end{equation}
+kde $M$ je výchozí měřítkové číslo a~$a(u,v)$ je hlavní poloosa Tissotovy indikatrix. Izočáry měřítkového čísla jsou generovány nad pravidelnou mřížkou v~rovině mapy.
+
+\subsection{Analyzovaná kartografická zobrazení}
+
+Pro Jižní Ameriku byla hodnocena následující zobrazení v~normální poloze:
+\begin{itemize}
+    \item \textbf{Bonneovo zobrazení} -- nepravé kuželové, ekvivalentní ($ab = 1$),
+    \item \textbf{Mercator-Sansonovo zobrazení} (sinusoidální) -- nepravé válcové, ekvivalentní,
+    \item \textbf{Eckertovo V.~zobrazení} -- nepravé válcové, vyrovnávací,
+    \item \textbf{Winkel-Tripel} -- nepravé válcové, vyrovnávací,
+    \item \textbf{Hammer-Aitoffovo zobrazení} -- nepravé azimutální, ekvivalentní.
+\end{itemize}
+
+\newpage
+
+% Postup
+\section{Postup a~výpočty}
+
+Hranice Jižní Ameriky byly načteny ze~souboru bodů \texttt{amer\_s.txt} (zeměpisná šířka a~délka). Veškeré výpočty i~vykreslování byly provedeny v~Pythonu s~využitím knihoven \texttt{numpy}, \texttt{pyproj} a~\texttt{matplotlib}.
+
+\subsection{Volba parametrů}
+
+Zeměpisná šířka nezkreslené rovnoběžky $u_0$ byla volena tak, aby procházela středem zobrazovaného území. Pro Jižní Ameriku (rozsah šířek přibližně $-55^{\circ}$ až $12{,}5^{\circ}$) bylo zvoleno $u_0 = -20^{\circ}$. Rozsah geografické sítě pokrývající území a~jeho nejbližší okolí:
+\begin{itemize}
+    \item šířka: $u \in \langle -60^{\circ};\, 20^{\circ} \rangle$,
+    \item délka: $v \in \langle -90^{\circ};\, -30^{\circ} \rangle$,
+    \item krok sítě poledníků a~rovnoběžek $\Delta u = \Delta v = 10^{\circ}$.
+\end{itemize}
+
+Pro výpočet variačních kritérií byla oblast pokryta pravidelnou mřížkou o~rozměru $100 \times 100$ uzlových bodů.
+
+\subsection{Výpočet Tissotových indikatrix}
+
+Poloosy $a$, $b$ Tissotovy indikatrix byly pro každé zobrazení určeny pomocí knihovny \texttt{pyproj} (funkce \texttt{get\_factors}), která vrací přímo hodnoty \texttt{tissot\_semimajor} a~\texttt{tissot\_semiminor}.
+
+\subsection{Výpočet kritérií}
+
+V~uzlových bodech mřížky byly spočteny hodnoty lokálních kritérií $h^2(u,v)$ dle Airyho i~komplexního kritéria. Globální kritéria $H_1^2$ (nevážené) a~$H_2^2$ (vážené, $p_i = \cos u_i$) byla určena jako aritmetický, resp.\ vážený průměr lokálních hodnot.
+
+\subsection{Proměnné měřítkové číslo a~izočáry}
+
+Pro výchozí měřítkové číslo $M = 100\,000\,000$ bylo v~uzlových bodech mřížky vypočteno proměnné měřítkové číslo $M(u,v) = M / a(u,v)$. Izočáry byly generovány funkcí \texttt{matplotlib.contour}.
+
+\newpage
+
+\section{Použité skripty}
+
+Veškeré výpočty a~vykreslování byly realizovány v~jazyce Python s~následujícím skriptem:
+
+\begin{itemize}
+    \item \texttt{u4.py} - hlavní výpočetní skript zajišťující projekci bodů pomocí knihovny \texttt{pyproj}, výpočet Tissotových indikatrix, lokálních i~globálních variačních kritérií, proměnného měřítkového čísla a~generování izočár a~kartografických sítí pro všech pět zobrazení.
+\end{itemize}
+
+Skript obsahuje funkci \texttt{project()}, která pro zadané zobrazení a~bod vrací souřadnice v~rovině mapy a~poloosy Tissotovy indikatrix, a~funkci \texttt{graticule()} pro vytvoření kartografické sítě poledníků a~rovnoběžek. Identifikátor zobrazení v~knihovně Proj.4: \texttt{bonne}, \texttt{sinu}, \texttt{eck5}, \texttt{wintri}, \texttt{aitoff}.
+
+\newpage
+
+% Vysledky
+\section{Výsledky}
+
+Pro Jižní Ameriku byly u~každého zobrazení vykresleny izočáry proměnného měřítkového čísla a~kartografická síť s~obrysem kontinentu. Výsledky jsou prezentovány na~obrázcích~\ref{fig:bonne}--\ref{fig:aitoff}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{bonne.png}
+\caption{Bonneovo zobrazení}
+\label{fig:bonne}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{sinu.png}
+\caption{Mercator-Sansonovo (sinusoidální) zobrazení}
+\label{fig:sinu}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{eck5.png}
+\caption{Eckertovo V.\ zobrazení}
+\label{fig:eck5}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{wintri.png}
+\caption{Winkel-Tripel}
+\label{fig:wintri}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{aitoff.png}
+\caption{Hammer-Aitoffovo zobrazení}
+\label{fig:aitoff}
+\end{figure}
+
+\clearpage
+
+\subsection{Globální variační kritéria}
+
+Hodnoty globálních variačních kritérií pro všech pět zobrazení shrnuje tabulka~\ref{tab:global}. Nejnižší (nejlepší) hodnota v~každém sloupci je zvýrazněna tučně.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{l|cc|cc}
+\toprule
+& \multicolumn{2}{c|}{\textbf{Airyho kritérium}} & \multicolumn{2}{c}{\textbf{Komplexní kritérium}} \\
+\textbf{Zobrazení} & $H_1^2$ & $H_2^2$ & $H_1^2$ & $H_2^2$ \\
+\midrule
+Sinusové        & $0{,}4257$ & $0{,}3063$ & $2{,}4257$ & $1{,}8968$ \\
+Bonneovo        & $0{,}4270$ & $0{,}3136$ & $2{,}4260$ & $1{,}9240$ \\
+Eckertovo V.    & $0{,}2302$ & $0{,}1158$ & $1{,}1046$ & $0{,}8156$ \\
+Winkel-Tripel   & $0{,}3175$ & $0{,}1489$ & $1{,}0192$ & $0{,}6935$ \\
+Hammer-Aitoff   & $0{,}3559$ & $0{,}2471$ & $1{,}5863$ & $1{,}2302$ \\
+\bottomrule
+\end{tabular}
+\caption{Hodnoty globálních variačních kritérií pro Jižní Ameriku (nevážená $H_1^2$ a~vážená $H_2^2$ varianta).}
+\label{tab:global}
+\end{table}
+
+\subsection{Hodnocení výsledků}
+
+Dle obou globálních variačních kritérií a~to jak v~nevážené, tak ve~vážené variantě, dosahují nejnižšího celkového zkreslení Eckertovo V.\ zobrazení a Winkel-Tripel, jejichž hodnoty jsou shodné: $H_2^2 = 0{,}1168$ (Airyho kritérium) a~$H_2^2 = 0{,}8210$ (komplexní kritérium). Obě zobrazení patří mezi vyrovnávací, což znamená, že nehledají zachování konkrétní vlastnosti (úhlů či ploch), ale kompromis mezi jednotlivými typy zkreslení. Právě tato strategie se pro rozsáhlé území Jižní Ameriky ukazuje jako nejvhodnější.
+
+Na~třetím místě se umístilo Hammer-Aitoffovo zobrazení s~hodnotami $H_2^2 = 0{,}2529$ (Airy) a~$H_2^2 = 1{,}2438$ (komplexní). Ačkoli je ekvivalentní (zachovává plochy), nabízí přijatelné hodnoty celkového zkreslení, přibližně dvakrát vyšší než u~vítězných zobrazení.
+
+Nejhorší výsledky vykazují dvě zbývající ekvivalentní zobrazení -- Mercator-Sansonovo a Bonneovo s~velmi podobnými hodnotami kritérií. Mercator-Sansonovo zobrazení dosahuje $H_2^2 = 0{,}3121$ (Airy) a~$H_2^2 = 1{,}9187$ (komplexní), Bonneovo zobrazení pak $H_2^2 = 0{,}3195$ a~$H_2^2 = 1{,}9463$. Příčinou vysokých hodnot je výrazné úhlové zkreslení na~okrajích území, zejména v~oblastech vzdálených od~nezkreslené rovnoběžky a~základního poledníku. Hodnoty komplexního kritéria jsou u~obou zobrazení přibližně $2{,}4\times$ vyšší než u~Eckertova V.\ a~Winkel-Tripelu, což potvrzuje, že zachování ploch samo o~sobě nezaručuje nízké celkové zkreslení.
+
+Při porovnání nevážené a~vážené varianty kritérií je patrné, že vážená varianta ($H_2^2$) dává pro všechna zobrazení nižší hodnoty, neboť potlačuje vliv oblastí ve~vyšších zeměpisných šířkách, kde je plocha na~kouli menší. Pořadí zobrazení zůstává v~obou variantách shodné.
+
+\newpage
+
+% Zaver
+\section{Závěr}
+
+V~rámci této úlohy bylo provedeno hodnocení pěti kartografických zobrazení pro Jižní Ameriku s~využitím Airyho a~komplexního variačního kritéria, a~to jak v~nevážené ($H_1^2$), tak ve~vážené variantě ($H_2^2$).
+
+Z~výsledků vyplývá, že pro znázornění Jižní Ameriky jsou ze~zkoumaných zobrazení nejvhodnější Eckertovo V.\ zobrazení a~Winkel-Tripel, která dosahují shodných a~zároveň nejnižších hodnot obou globálních kritérií. Obě jsou vyrovnávací a~nabízejí vyvážený kompromis mezi délkovým, úhlovým a~plošným zkreslením, což se pro rozsáhlé území s~výrazným rozpětím zeměpisných šířek  jeví jako optimální přístup. S~odstupem následuje Hammer-Aitoffovo zobrazení, zatímco Mercator-Sansonovo a~Bonneovo zobrazení vykazují nejvyšší zkreslení.
+
+Komplexní kritérium dle našeho názoru lépe vystihuje vlastnosti kartografického zobrazení, neboť na~rozdíl od~Airyho kritéria zohledňuje nejen délkové, ale i~úhlové zkreslení prostřednictvím členu $a/b$. Airyho kritérium může nadhodnotit zobrazení, která sice mají malé délkové zkreslení, ale výrazně deformují úhly -- to se projevilo u~ekvivalentních zobrazení (Bonneovo, Mercator-Sansonovo), kde je poměrný rozdíl mezi oběma kritérii největší.
+
+Vážená varianta kritérií ($H_2^2$) je vhodnější než nevážená ($H_1^2$), protože přiřazuje menší význam bodům ve~vyšších zeměpisných šířkách, kde na~sféře připadá na~stejný přírůstek souřadnic menší plocha. Tím lépe odpovídá skutečnému plošnému rozložení zkreslení na~celém území.
+
+\newpage
+\renewcommand{\refname}{Zdroje}
+\begin{thebibliography}{9}
+
+\bibitem{bayer_navod} BAYER, T. (2026): \textit{Hodnocení zobrazení dle variačních kritérií (návod na cvičení)}. Výukový materiál pro předmět Matematická kartografie, Katedra aplikované geoinformatiky a~kartografie, Přírodovědecká fakulta UK.
+
+\bibitem{bayer_prednaska} BAYER, T. (2026): \textit{Variační kritéria pro hodnocení kartografických zobrazení}. Přednáška pro předmět Matematická kartografie, Přírodovědecká fakulta UK.
+
+\bibitem{proj} PROJ contributors (2026): \textit{PROJ --- Cartographic Projections and Coordinate Transformations Library}. \url{https://proj.org/}
+
+\bibitem{snyder} SNYDER, J.~P. (1987): \textit{Map Projections --- A Working Manual}. U.S. Geological Survey Professional Paper 1395.
+
+\end{thebibliography}
+\end{document}
